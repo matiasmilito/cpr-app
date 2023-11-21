@@ -11,13 +11,76 @@ datasource db {
 }
 
 model User {
-  id        Int      @id @default(autoincrement())
-  email     String   @unique
-  name      String
-  lastName  String
-  hours     Int
-  password  String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  userRole  String
+  id         Int          @id @default(autoincrement())
+  email      String       @unique
+  name       String
+  lastName   String
+  hours      Int
+  password   String
+  createdAt  DateTime     @default(now())
+  updatedAt  DateTime     @updatedAt
+  userRole   String
+  Inspection Inspection[]
+  Flight     Flight[]
+}
+
+model Aircraft {
+  id          Int          @id @default(autoincrement())
+  type        String
+  model       String
+  hours       Int
+  inspections Inspection[]
+  Fuel        Fuel[]
+  Oil         Oil[]
+  Flight      Flight[]
+}
+
+model Inspection {
+  id          Int      @id @default(autoincrement())
+  name        String
+  description String
+  hours       Int
+  aircraft    Aircraft @relation(fields: [aircraftId], references: [id])
+  aircraftId  Int
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  User        User?    @relation(fields: [userId], references: [id])
+  userId      Int?
+}
+
+model Fuel {
+  id         Int       @id @default(autoincrement())
+  type       String
+  provider   String
+  quantity   Int
+  createdAt  DateTime  @default(now())
+  aircraft   Aircraft? @relation(fields: [aircraftId], references: [id])
+  aircraftId Int?
+  Flight     Flight[]
+}
+
+model Oil {
+  id         Int       @id @default(autoincrement())
+  type       String
+  quantity   Float
+  createdAt  DateTime  @default(now())
+  aircraft   Aircraft? @relation(fields: [aircraftId], references: [id])
+  aircraftId Int?
+  Flight     Flight[]
+}
+
+model Flight {
+  id           Int       @id @default(autoincrement())
+  date         DateTime
+  flightTime   Float
+  initialTach  Float
+  finalTach    Float
+  fuelLoaded   Fuel?     @relation(fields: [fuelLoadedId], references: [id])
+  oilLoaded    Oil?      @relation(fields: [oilLoadedId], references: [id])
+  fuelLoadedId Int
+  oilLoadedId  Int
+  pilot        User      @relation(fields: [userId], references: [id])
+  userId       Int
+  Aircraft     Aircraft? @relation(fields: [aircraftId], references: [id])
+  aircraftId   Int?
 }
