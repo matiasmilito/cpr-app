@@ -7,11 +7,12 @@ import {
   Scripts,
   ScrollRestoration,
 } from "@remix-run/react";
-
+import figtreeFont from "@fontsource/figtree/index.css";
 import stylesheet from "~/app.css";
 
 export const links: LinksFunction = () => [
   { rel: "stylesheet", href: stylesheet },
+  { rel: "stylesheet", href: figtreeFont },
 ];
 
 export default function App() {

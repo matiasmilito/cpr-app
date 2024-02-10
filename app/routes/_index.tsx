@@ -1,4 +1,5 @@
 import type { MetaFunction } from "@remix-run/node";
+import HeaderBar from "~/components/header-bar";
 import spinner from "~/spinnner.png";
 
 export const meta: MetaFunction = () => {
@@ -11,6 +12,7 @@ export const meta: MetaFunction = () => {
 export default function Index() {
   return (
     <div style={{ fontFamily: "system-ui, sans-serif", lineHeight: "1.8" }}>
+      <HeaderBar />
       <h1 className="font-bold text-lg">Welcome to Remix</h1>
       <img
         src={spinner}

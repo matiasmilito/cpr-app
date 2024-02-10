@@ -1,4 +1,5 @@
 import { prisma } from "./db.server";
+import bcrypt from "bcrypt";
 
 export async function createAircraft(
   type: string,
@@ -74,6 +75,41 @@ export async function createFlight(
       oilLoadedId: oilLoad.id,
       aircraftId: id,
       date: new Date(),
+    },
+  });
+}
+
+export async function isExistingEmail(email: string) {
+  return await prisma.user.findFirst({
+    where: { email },
+  });
+}
+
+export async function createPassword(password: string) {
+  const salt = await bcrypt.genSalt(10);
+  return await bcrypt.hash(password, salt);
+}
+
+export async function createUser(
+  email: string,
+  name: string,
+  lastName: string,
+  hours: 0,
+  password: string,
+  role: string
+) {
+  // I should encrypt the password here using bcrypt
+
+  const hashedPassword = await createPassword(password);
+
+  return await prisma.user.create({
+    data: {
+      email,
+      name,
+      lastName,
+      hours,
+      password: hashedPassword,
+      userRole: role,
     },
   });
 }
