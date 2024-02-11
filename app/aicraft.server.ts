@@ -94,12 +94,10 @@ export async function createUser(
   email: string,
   name: string,
   lastName: string,
-  hours: 0,
+  hours: number,
   password: string,
   role: string
 ) {
-  // I should encrypt the password here using bcrypt
-
   const hashedPassword = await createPassword(password);
 
   return await prisma.user.create({
